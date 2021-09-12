@@ -55,3 +55,24 @@ squishMap f (x:xs) =  f x ++ squishMap f xs
 
 squishAgain :: [[a]] -> [a]
 squishAgain = squishMap id
+
+myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
+myMaximumBy = myCompareBy GT
+
+myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
+myMinimumBy = myCompareBy LT
+
+myCompareBy :: Ordering -> (a -> a -> Ordering) -> [a] -> a
+myCompareBy o f (x:xs) = go f o xs x
+    where go f o (x:xs) x'
+            | null xs && isEqual = x
+            | null xs = x'
+            | isEqual = go f o xs x
+            | otherwise = go f o xs x'
+                where isEqual = f x x' == o
+
+myMaximum :: (Ord a)  => [a] -> a
+myMaximum = myMaximumBy compare
+
+myMinimum :: (Ord a)  => [a] -> a
+myMinimum = myMinimumBy compare
