@@ -1,6 +1,8 @@
 module Cipher where
 
 import           Data.Char (chr, ord)
+import           System.IO (BufferMode (NoBuffering), hSetBuffering, stdout)
+
 
 caesar :: Int -> String -> String
 caesar x = map (shift x)
@@ -14,3 +16,23 @@ shift x c
 unCaesar :: Int -> String -> String
 unCaesar x = map (shift (negate x))
 
+encrypt :: IO ()
+encrypt = do
+  hSetBuffering stdout NoBuffering
+  putStr "Message to encrypt: "
+  sentenceToCode <- getLine
+  putStr "Shift by: "
+  shiftBy <- getLine
+  putStrLn $ "Encoded phrase is: " ++ caesar (read shiftBy::Int) sentenceToCode
+  return ()
+
+
+decrypt :: IO ()
+decrypt = do
+  hSetBuffering stdout NoBuffering
+  putStr "Message to decrypt: "
+  sentenceToCode <- getLine
+  putStr "Shift by: "
+  shiftBy <- getLine
+  putStrLn $ "Decoded phrase is: " ++ unCaesar (read shiftBy::Int) sentenceToCode
+  return ()
