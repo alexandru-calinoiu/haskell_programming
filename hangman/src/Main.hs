@@ -86,12 +86,15 @@ handleGuess puzzle guess = do
       return (fillInCharacter puzzle guess)
 
 gameOver :: Puzzle -> IO ()
-gameOver (Puzzle wordToGuess _ guessed) =
-  when (length guessed > 7) $
+gameOver (Puzzle wordToGuess filledInSoFar guessed) =
+  when (wrongGuesses > 7) $
   do
-    putStrLn "You loste!"
+    putStrLn "You lost!"
     putStrLn  $ "The word was: " ++ wordToGuess
     exitSuccess
+  where
+    guessedSoFar = filter isJust filledInSoFar
+    wrongGuesses = length guessed - length guessedSoFar
 
 gameWin :: Puzzle -> IO ()
 gameWin (Puzzle _ filledInSoFar _) =
@@ -102,8 +105,8 @@ gameWin (Puzzle _ filledInSoFar _) =
 
 runGame :: Puzzle -> IO ()
 runGame puzzle = forever $ do
-  gameOver puzzle
   gameWin puzzle
+  gameOver puzzle
   putStrLn $ "Current puzzle is: " ++ show puzzle
   putStr  "Guess a letter: "
   guess <- getLine
