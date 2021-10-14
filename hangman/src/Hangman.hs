@@ -1,19 +1,11 @@
-module Main where
+module Hangman where
 
 import           Control.Monad (forever, when)
 import           Data.Char     (toLower)
 import           Data.List     (intersperse)
 import           Data.Maybe    (fromMaybe, isJust)
 import           System.Exit   (exitSuccess)
-import           System.IO     (BufferMode (NoBuffering), hSetBuffering, stdout)
 import           System.Random (randomRIO)
-
-main :: IO ()
-main = do
-  hSetBuffering stdout NoBuffering
-  word <- randomWord'
-  let puzzle = freshPuzzle word
-  runGame puzzle
 
 newtype WordList =
   WordList [String]
@@ -48,6 +40,7 @@ randomWord' = gameWords >>= randomWord
 
 data Puzzle =
   Puzzle String [Maybe Char] [Char]
+  deriving (Eq)
 
 instance Show Puzzle where
   show (Puzzle _ discovered guessed) =
