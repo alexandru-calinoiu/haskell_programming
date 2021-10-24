@@ -83,4 +83,3 @@ runPlusQc = do
 prop_quotRem :: Integral a => a -> a -> Bool
 prop_quotRem x y = quot x y * y + rem x y == x
 
-
