@@ -12,6 +12,7 @@ library
   ghc-options:      -Wall -fwarn-tabs
   build-depends:
       base        >=4.7 && <5
+    , checkers
     , hspec
     , QuickCheck
 
